@@ -1,0 +1,10 @@
+{
+  "Group": "Order Rules",
+  "FriendlyName": "Minimum Order Amount",
+  "SystemName": "Nop.Plugin.MinimumOrderAmount",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.70" ],
+  "Author": "afshin",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.MinimumOrderAmount.dll"
+}

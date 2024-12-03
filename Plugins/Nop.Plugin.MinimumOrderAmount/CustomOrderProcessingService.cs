@@ -7,7 +7,6 @@ using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Events;
 using Nop.Core;
-using Nop.Plugin.MinimumOrderAmount;
 using Nop.Services.Affiliates;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
@@ -225,11 +224,14 @@ namespace Nop.Plugin.MinimumOrderAmount
 
         public override async Task<PlaceOrderResult> PlaceOrderAsync(ProcessPaymentRequest processPaymentRequest)
         {
+                Console.WriteLine("override PlaceOrderAsync called .............");
             // بررسی مبلغ سفارش قبل از ثبت
             var orderTotal = processPaymentRequest.OrderTotal;
-
+            Console.WriteLine($"override PlaceOrderAsync called .............Total order is =>{orderTotal}");
+            Console.WriteLine($"override PlaceOrderAsync called ............._settings.MinimumOrderAmount is =>{_settings.MinimumOrderAmount}");
             if (orderTotal < _settings.MinimumOrderAmount)
             {
+                
                 throw new Exception($"Order total must be at least {_settings.MinimumOrderAmount}.");
             }
 
