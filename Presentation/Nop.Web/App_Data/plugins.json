@@ -44,6 +44,10 @@
       "Version": "4.70.1"
     },
     {
+      "SystemName": "Payments.CashOnDelivery",
+      "Version": "4.70.1"
+    },
+    {
       "SystemName": "Payments.CheckMoneyOrder",
       "Version": "4.70.2"
     },
@@ -90,10 +94,6 @@
     {
       "SystemName": "ExternalAuth.Facebook",
       "Version": "4.70.4"
-    },
-    {
-      "SystemName": "Payments.CashOnDelivery",
-      "Version": "4.70.1"
     },
     {
       "SystemName": "Nop.Plugin.MinimumOrderAmount",

@@ -28,9 +28,8 @@ namespace Nop.Plugin.MinimumOrderAmount
 {
     public class CustomOrderProcessingService : OrderProcessingService
     {
-        private readonly MinimumOrderAmountSettings _settings;
         #region Fields
-
+        private readonly MinimumOrderAmountSettings _settings;
         protected readonly CurrencySettings _currencySettings;
         protected readonly IAddressService _addressService;
         protected readonly IAffiliateService _affiliateService;
@@ -79,6 +78,8 @@ namespace Nop.Plugin.MinimumOrderAmount
         protected readonly TaxSettings _taxSettings;
 
         #endregion
+
+        #region ctor
         public CustomOrderProcessingService(
             MinimumOrderAmountSettings settings, CurrencySettings currencySettings,
         IAddressService addressService,
@@ -221,23 +222,26 @@ namespace Nop.Plugin.MinimumOrderAmount
             _shippingSettings = shippingSettings;
             _taxSettings = taxSettings;
         }
+        #endregion
 
+        #region Methods
         public override async Task<PlaceOrderResult> PlaceOrderAsync(ProcessPaymentRequest processPaymentRequest)
         {
-                Console.WriteLine("override PlaceOrderAsync called .............");
-            // بررسی مبلغ سفارش قبل از ثبت
-            var orderTotal = processPaymentRequest.OrderTotal;
-            Console.WriteLine($"override PlaceOrderAsync called .............Total order is =>{orderTotal}");
-            Console.WriteLine($"override PlaceOrderAsync called ............._settings.MinimumOrderAmount is =>{_settings.MinimumOrderAmount}");
-            if (orderTotal < _settings.MinimumOrderAmount)
-            {
-                
-                throw new Exception($"Order total must be at least {_settings.MinimumOrderAmount}.");
-            }
+            var customer = await _customerService.GetCustomerByIdAsync(processPaymentRequest.CustomerId);
+            if (customer is null)
+                throw new Exception($"Customer not found.");
+            var cart = await _shoppingCartService.GetShoppingCartAsync(customer, ShoppingCartType.ShoppingCart, processPaymentRequest.StoreId);
 
-            // ادامه فرآیند پیش‌فرض
+            if (cart is null)
+                throw new Exception("Shopping Cart not found.");
+
+            var shopingCartTotal = await _orderTotalCalculationService.GetShoppingCartTotalAsync(cart);
+
+            if (shopingCartTotal.shoppingCartTotal < _settings.MinimumOrderAmount)
+                throw new Exception($"Order total must be at least {_settings.MinimumOrderAmount}.");
             return await base.PlaceOrderAsync(processPaymentRequest);
         }
+        #endregion
     }
 }
 
