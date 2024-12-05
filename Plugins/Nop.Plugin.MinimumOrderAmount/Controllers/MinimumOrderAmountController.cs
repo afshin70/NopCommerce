@@ -22,7 +22,7 @@ public class MinimumOrderAmountController : Controller
         {
             MinimumOrderAmount = _settings.MinimumOrderAmount
         };
-        return View("~/Plugins/Nop.Plugin.MinimumOrderAmount/Views/Configure.cshtml", model);
+        return View("~/Plugins/MinimumOrderAmount/Views/Configure.cshtml", model);
     }
 
     [HttpPost]
